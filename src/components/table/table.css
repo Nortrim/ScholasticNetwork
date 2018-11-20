@@ -1,0 +1,9 @@
+.wrap{
+    width: calc(100% - 20px);
+    margin: 10px;
+    background: aliceblue;
+    height: calc(100% - 20px);
+}
+.main-table{
+    width: 100%;
+}
