@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import CreatePop from './create-pop'
 import EditPop from './edit-pop'
 import './pop-ups.css'
 
-export default class PopUp extends Component {
+class PopUp extends Component {
 
     closerHandler = () => {
         this.props.closeAllPops()
@@ -18,7 +19,7 @@ export default class PopUp extends Component {
     };
 
     popUp = () => {
-        if (this.props.createPop) {
+        if (this.props.isCreatePopOpen) {
             return (
                 <div className='pop-up__wrapper'>
                     <div className='pop_up__background'/>
@@ -28,8 +29,7 @@ export default class PopUp extends Component {
                     />
                 </div>
             )
-        } else if (this.props.changePop) {
-            console.log(this.props)
+        } else if (this.props.isEditPopOpen) {
             return (
                 <div className='pop-up__wrapper'>
                     <div className='pop_up__background'/>
@@ -47,3 +47,12 @@ export default class PopUp extends Component {
         return this.popUp()
     }
 }
+
+const putStateToProps = (state) => {
+    return {
+        isCreatePopOpen: state.popUpReducer.isCreatePopOpen,
+        isEditPopOpen: state.popUpReducer.isEditPopOpen,
+    }
+};
+
+export default connect(putStateToProps)(PopUp)

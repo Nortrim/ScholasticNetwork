@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import './table.css'
+import {bindActionCreators} from "redux";
+import { openCreatePop, openEditPop } from "../../store/actions/popUpActions";
+import {actionDelete} from "../../store/actions/mainActions";
 
-export default class TableComponent extends Component {
+class TableComponent extends Component {
     state = {
-        visibleData : this.props.data
+        visibleData : this.props.data,
     };
 
-    deleteHandler = (id) => {
-        let lData = this.state.visibleData;
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
         this.setState({
-            visibleData: lData.filter(item => item.id !== id)
+            visibleData: nextProps.data
+        })
+    }
+
+    deleteHandler = (id) => {
+        let vData = this.state.visibleData;
+        this.props.deleteItem(id);
+        this.setState({
+            visibleData: vData.filter(item => item.id !== id)
         });
     };
 
-    createHandler = () => {
-        this.props.createPopHandler();
-    };
-
     editHandler = (id) => {
-        this.props.editPopHandler(id);
+        this.props.openEditPop(id);
     };
 
     searching = (e) => {
         this.setState({
-            data: this.props.data.filter(item => {
+            visibleData: this.props.data.filter(item => {
                 for (let key in item) {
                     let str = String(item[key]).toLowerCase(),
                         searchingStr = e.target.value.toLowerCase();
@@ -65,8 +73,24 @@ export default class TableComponent extends Component {
                         {dataList}
                     </tbody>
                 </table>
-                <button onClick={this.createHandler}>Добавить товар</button>
+                <button onClick={this.props.openCreatePop}>Добавить товар</button>
             </div>
         )
     }
 }
+
+const putStateToProps = (state) => {
+    return {
+        data: state.mainReducer.data
+    }
+};
+
+const putActionsToProps = (dispatch) => {
+    return {
+        openCreatePop: bindActionCreators(openCreatePop, dispatch),
+        openEditPop: bindActionCreators(openEditPop, dispatch),
+        deleteItem: bindActionCreators(actionDelete, dispatch)
+    }
+};
+
+export default connect(putStateToProps, putActionsToProps)(TableComponent);

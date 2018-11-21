@@ -1,17 +1,22 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
+import { closePop } from "../../store/actions/popUpActions";
+import { actionCreate } from '../../store/actions/mainActions';
 
-export default class CreatePop extends Component {
+class CreatePop extends Component {
     state = {
       inputName: '',
       inputQuantity: ''
     };
+
     closerHandler = () => {
-        this.props.closerHandler();
+        this.props.closePop();
     };
 
     createHandler = () => {
-        let data = this.state;
-        this.props.createHandler(data);
+        this.props.createNew(this.state);
+        this.props.closePop();
     };
 
     changeInput = (e) => {
@@ -21,10 +26,9 @@ export default class CreatePop extends Component {
             });
         } else if (e.target.name === 'quantity') {
             this.setState({
-                inputQuantity: e.target.value
+                inputQuantity: parseInt(e.target.value)
             });
         }
-        console.log(this.state)
     };
 
     render() {
@@ -41,3 +45,18 @@ export default class CreatePop extends Component {
         )
     }
 }
+
+const putStateToProps = (state) => {
+    return {
+        data: state.mainReducer.data
+    }
+};
+
+const putActionsToProps = (dispatch) => {
+    return {
+        createNew: bindActionCreators(actionCreate, dispatch),
+        closePop: bindActionCreators(closePop, dispatch)
+    }
+};
+
+export default connect(putStateToProps, putActionsToProps)(CreatePop)
