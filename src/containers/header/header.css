@@ -1,7 +1,8 @@
 .main-header {
     height: 70px;
     width: 100%;
-    background: antiquewhite;
+    background: #244C6B;
+    color: white
 }
 .main-header__logo{
     width: 70px;
@@ -11,7 +12,6 @@
 .main-header__title{
     display: inline-block;
     height: 70px;
-    width: 70px;
     vertical-align: middle;
     margin-top: -30px;
     font-size: 26px;

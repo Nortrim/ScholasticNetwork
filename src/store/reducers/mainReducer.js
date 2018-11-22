@@ -1,51 +1,28 @@
 import * as types from "../types";
 
 const mainState = {
-    data: [
-        {
-            id: 0,
-            name: 'Lel',
-            quantity: 20,
-            price: 10
-        },
-        {
-            id: 1,
-            name: 'Stich',
-            quantity: 20,
-            price: 10
-        },
-        {
-            id: 2,
-            name: 'Rofl',
-            quantity: 20,
-            price: 10
-        },
-        {
-            id: 3,
-            name: 'RSock',
-            quantity: 20,
-            price: 10
-        },
-    ],
-    editId: null
+    data: []
 };
 
 export function mainReducer(state = mainState, action) {
     switch (action.type) {
-        case types.CREATE_ITEM:
-            let newItem = {
-                id: state.data.length ? state.data[state.data.length - 1].id + 1 : 0,
-                name: action.payload.inputName,
-                quantity: action.payload.inputQuantity,
-                price: 11
-            };
+        case types.SET_DATA:
             return {
                 ...state,
-                data: [...state.data, newItem]
+                data: action.payload
+            };
+        case types.CREATE_ITEM:
+            return {
+                ...state,
+                data: [...state.data, action.payload]
             };
         case types.EDIT_ITEM:
-            let newData = state.data;
-            newData[action.payload.id] = action.payload;
+            let newData = Object.assign([], state.data);
+            newData.forEach(el => {
+                if(el.id === action.payload.id) {
+                    el = action.payload
+                }
+            });
             return {
                 ...state,
                 data: newData

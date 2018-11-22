@@ -1,9 +1,11 @@
 import * as types from "../types";
 
 const popState = {
+    // Флаги открытия попапов
     isCreatePopOpen: false,
     isEditPopOpen: false,
-    editId: null
+    // Редактируемый товар
+    editedItem: null
 };
 
 export function popUpReducer(state = popState, action) {
@@ -17,7 +19,7 @@ export function popUpReducer(state = popState, action) {
             return {
                 ...state,
                 isEditPopOpen: true,
-                editId: action.payload
+                editedItem: action.payload
             };
         case types.CLOSE_POPS:
             return {

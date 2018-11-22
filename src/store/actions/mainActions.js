@@ -20,3 +20,10 @@ export const actionDelete = (id) => {
         payload: id
     }
 };
+
+export const setData = (data) => {
+    return {
+        type: types.SET_DATA,
+        payload: data
+    }
+};
